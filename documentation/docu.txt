@@ -1,0 +1,4 @@
+System has not been booted with systemd as init system (PID 1): i got this error as i wanted to start
+postgrsql with: systemctl start postgrsql
+As an alternative to Systemd in WSL i ve choosed: Docker because It Doesn't interfere with other packages already installed (no dependency issues)
+The Docker images themselves pretty much never use Systemd, so you can often inspect the Dockerfile to see how the service is started without Systemd

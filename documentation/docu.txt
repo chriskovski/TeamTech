@@ -1,4 +1,14 @@
 System has not been booted with systemd as init system (PID 1): i got this error as i wanted to start
 postgrsql with: systemctl start postgrsql
 As an alternative to Systemd in WSL i ve choosed: Docker because It Doesn't interfere with other packages already installed (no dependency issues)
-The Docker images themselves pretty much never use Systemd, so you can often inspect the Dockerfile to see how the service is started without Systemd
+The Docker images themselves pretty much never use Systemd, so you can often inspect the Dockerfile to see how the service is started without Systemd.
+
+SonarQube has 3 different components:
+- Scanner: scans the ousrce code, it can be any java file, .NET... supports more as 20 languages
+it works very closely with cicd tools.
+- Sonarserver: it is the main component which includes sonarqube ui: it contains Webserver. compoute engine and a search Sonarserver
+- Db server: all the analysis reports, all the rules and quality gates will be stored in the DB server.
+
+Da unsere Jenkins auf die VM installiert ist, java war schon insatalliert, mussten wir maven auf die VM installieren, das haben wir erst mit apt get gemacht und diese 
+error bekommen: java.lang.IllegalStateException: Unable to load cache item, 
+da ubuntu 18.04, die neueste Version von apt maven noch Apache Maven 3.6.0, die nicht unterstützt jdk17.

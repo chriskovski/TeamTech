@@ -11,4 +11,4 @@ it works very closely with cicd tools.
 
 Da unsere Jenkins auf die VM installiert ist, java war schon insatalliert, mussten wir maven auf die VM installieren, das haben wir erst mit apt get gemacht und diese 
 error bekommen: java.lang.IllegalStateException: Unable to load cache item, 
-da ubuntu 18.04, die neueste Version von apt maven noch Apache Maven 3.6.0, die nicht unterstützt jdk17.
+da ubuntu 18.04 (unsere ist ubuntu 18.04.6), die neueste Version von apt maven noch Apache Maven 3.6.0, die nicht unterstützt jdk17.

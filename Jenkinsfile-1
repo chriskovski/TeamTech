@@ -6,9 +6,15 @@ pipeline {
     }
     stages {
         stage('Scan'){
+            agent{
+                docker {
+                    image 'maven:3.8.7-openjdk-18-slim'
+                    }
+            }
             steps {
                 withSonarQubeEnv(installationName: 'sq1') {
-                    sh './mvnw clean org.sonarqube.scanner.maven:sonar-maven-plugin:3.9.1.2155:sonar'
+                    sh 'mvn clean install' 
+                    sh 'mvn sonar:sonar -Dsonar.login=b913b3da-4248-45b6-ae34-f2b2d99cdae7'
                 }
             }
         }

@@ -17,7 +17,7 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sq1') {
                     sh 'mvn dependency:go-offline -B'
                     sh 'mvn clean install' 
-                    sh 'mvn sonar:sonar -Dsonar.login=b913b3da-4248-45b6-ae34-f2b2d99cdae7'
+                    sh 'mvn sonar:sonar -Dsonar.login=squ_5e56d72387698ef32e9ee9112389baa473aadb07'
                     
                 }
             }

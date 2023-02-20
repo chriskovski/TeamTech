@@ -12,6 +12,7 @@ pipeline {
                     environment {
                         SONAR_HOST_URL = 'http://20.93.255.213:9000'
                     }
+                }
             }
             steps {
                 withSonarQubeEnv(installationName: 'sq1') {

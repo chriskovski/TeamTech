@@ -9,9 +9,8 @@ pipeline {
             agent{
                 docker {
                     image 'maven:3.8.7-openjdk-18-slim'
-                    environment {
-                        SONAR_HOST_URL = 'http://20.93.255.213:9000'
-                    }
+                    args "-e SONAR_HOST_URL = 'http://20.93.255.213:9000'"
+                    
                 }
             }
             steps {

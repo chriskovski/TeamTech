@@ -1,0 +1,276 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o sonarqube.yaml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube
+  name: sonarqube
+spec:
+  ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+  selector:
+    io.kompose.service: sonarqube
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o sonarqube.yaml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-database
+  name: sonarqube-database
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: sonarqube-database
+status:
+  loadBalancer: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o sonarqube.yaml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube
+  name: sonarqube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: sonarqube
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o sonarqube.yaml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/teamtech-default: "true"
+        io.kompose.service: sonarqube
+    spec:
+      containers:
+        - env:
+            - name: SONARQUBE_JDBC_PASSWORD
+              value: sonarpass
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://sonarqube-database:5432/sonarqube
+            - name: SONARQUBE_JDBC_USERNAME
+              value: sonarqube
+          image: sonarqube
+          name: sonarqube
+          ports:
+            - containerPort: 9000
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/sonarqube/conf
+              name: sonarqube-conf
+            - mountPath: /opt/sonarqube/data
+              name: sonarqube-data
+            - mountPath: /opt/sonarqube/extensions
+              name: sonarqube-extensions
+            - mountPath: /opt/sonarqube/lib/bundled-plugins
+              name: sonarqube-bundled-plugins
+      restartPolicy: Always
+      volumes:
+        - name: sonarqube-conf
+          persistentVolumeClaim:
+            claimName: sonarqube-conf
+        - name: sonarqube-data
+          persistentVolumeClaim:
+            claimName: sonarqube-data
+        - name: sonarqube-extensions
+          persistentVolumeClaim:
+            claimName: sonarqube-extensions
+        - name: sonarqube-bundled-plugins
+          persistentVolumeClaim:
+            claimName: sonarqube-bundled-plugins
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-conf
+  name: sonarqube-conf
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-data
+  name: sonarqube-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-extensions
+  name: sonarqube-extensions
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-bundled-plugins
+  name: sonarqube-bundled-plugins
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: teamtech-default
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              io.kompose.network/teamtech-default: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/teamtech-default: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o sonarqube.yaml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-database
+  name: sonarqube-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: sonarqube-database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o sonarqube.yaml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/teamtech-default: "true"
+        io.kompose.service: sonarqube-database
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: sonarqube
+            - name: POSTGRES_PASSWORD
+              value: sonarpass
+            - name: POSTGRES_USER
+              value: sonarqube
+          image: postgres:12
+          name: sonarqube-database
+          ports:
+            - containerPort: 5432
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql
+              name: sonarqube-database
+            - mountPath: /var/lib/postgresql/data
+              name: sonarqube-database-data
+      restartPolicy: Always
+      volumes:
+        - name: sonarqube-database
+          persistentVolumeClaim:
+            claimName: sonarqube-database
+        - name: sonarqube-database-data
+          persistentVolumeClaim:
+            claimName: sonarqube-database-data
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-database
+  name: sonarqube-database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sonarqube-database-data
+  name: sonarqube-database-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+

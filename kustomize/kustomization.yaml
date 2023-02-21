@@ -1,9 +1,27 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- k8s/ingress.yaml
 - k8s/nginx-deployment.yaml
 - k8s/nginx-service.yaml
-- k8s/ingress.yaml
+- k8s/DB/postgres-configmap.yaml
+- k8s/DB/postgres-deploy.yaml
+- k8s/DB/postgres-service.yaml
+- k8s/DB/pgadmin-deploy.yaml
+- k8s/DB/pgadmin-service.yaml
+- k8s/backend.yaml
+- k8s/kibana.yaml
+- k8s/sonarqube-1.yaml
+- k8s/prometheus/prom-deployment.yaml
+- k8s/prometheus/prometheus-config.yaml
+- k8s/prometheus/prometheus-service.yaml
+- k8s/Grafana/grafana-datasource-config.yaml
+- k8s/Grafana/grafana-deployment.yaml
+- k8s/Grafana/grafana-service.yaml
+- k8s/Nagios/nagios.deployment.yaml
+- k8s/Nagios/nagios-service.yaml
 images:
+- name: devops2022.azurecr.io/teamtechbackend
+  newTag: b8b4dab054e738a7bc5f9da0e93dbd595aedfc79
 - name: devops2022.azurecr.io/tech
-  newTag: 42fe325ccf5d480f96674eb93f0d376aa16452b0
+  newTag: b8b4dab054e738a7bc5f9da0e93dbd595aedfc79

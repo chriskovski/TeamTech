@@ -1,0 +1,23 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: tech-kibana
+spec:
+  version: 8.6.2
+  count: 1
+  elasticsearchRef:
+    namespace: logging
+    name: quickstart
+  http:
+    service:
+      metadata:
+        name: teamtech-kibana
+      spec:
+        type: LoadBalancer
+        ports:
+        - port: 5601
+          targetPort: 5601
+    tls:
+      selfSignedCertificate:
+        subjectAltNames:
+          - dns: kibana.tech.devops2022.de

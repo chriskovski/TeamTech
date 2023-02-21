@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: devops2022.azurecr.io/teamtechbackend:v0.1.18
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: backend-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5000
+      targetPort: 8080
+  selector:
+    app: backend
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: backend-ingress
+#   annotations:
+#     # cert-manager.io/cluster-issuer: "letsencrypt-production"
+#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#     ingressclass.kubernetes.io/is-default-class: "true"
+
+# spec:
+# #   tls:
+# #     - hosts:
+# #       - tech.devops2022.de
+# #       secretName: tech-prod-tls
+#   rules:
+#   - host: tech.devops2022.de
+#     http:
+#         paths:
+#         - pathType: Prefix
+#           path: "/html"
+#           backend:
+#             service:
+#               name: backend-service
+#               port:
+#                 number: 5000

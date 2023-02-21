@@ -1,0 +1,3 @@
+flask 
+Flask-restful
+psycopg2

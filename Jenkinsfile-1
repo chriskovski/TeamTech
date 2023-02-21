@@ -10,6 +10,7 @@ pipeline {
                 docker {
                     image 'maven:3.8.7-openjdk-18-slim'
                     args "-e 'HTTP_PROXY=http://20.93.255.213:9000'"
+                    image 'node:19.6.1-alpine'
                     
                 }
             }
@@ -19,6 +20,18 @@ pipeline {
                     sh 'mvn clean install' 
                     sh 'mvn sonar:sonar -Dsonar.login=squ_5e56d72387698ef32e9ee9112389baa473aadb07'
                     
+                }
+                withSonarQubeEnv(installationName: 'sq1') {
+                    sh "sonar-scanner \
+                    
+                        -Dsonar.projectKey=${projectName} \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                        -Dsonar.login=${env.SONAR_AUTH_TOKEN} \
+                        -Dsonar.projectName=${projectName} \
+                        -Dsonar.projectVersion=${env.BUILD_ID}"
+
+
                 }
             }
         }

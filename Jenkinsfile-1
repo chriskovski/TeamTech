@@ -10,17 +10,19 @@ pipeline {
                 docker {
                     image 'maven:3.8.7-openjdk-18-slim'
                     args "-e 'HTTP_PROXY=http://20.93.255.213:9000'"
+
                     image 'node:19.6.1-alpine'
+                    args "-e 'HTTP_PROXY=http://20.93.255.213:9000'"
                     
                 }
             }
             steps {
-                withSonarQubeEnv(installationName: 'sq1') {
-                    sh 'mvn dependency:go-offline -B -f ./MyWebApp/pom.xml'
-                    sh 'mvn clean install -f ./MyWebApp/pom.xml' 
-                    sh 'mvn sonar:sonar -Dsonar.login=squ_5e56d72387698ef32e9ee9112389baa473aadb07 -f ./MyWebApp/pom.xml'
+            //    withSonarQubeEnv(installationName: 'sq1') {
+            //        sh 'mvn dependency:go-offline -B -f ./MyWebApp/pom.xml'
+            //        sh 'mvn clean install -f ./MyWebApp/pom.xml' 
+            //        sh 'mvn sonar:sonar -Dsonar.login=squ_5e56d72387698ef32e9ee9112389baa473aadb07 -f ./MyWebApp/pom.xml'
                     
-                }
+            //    }
                 withSonarQubeEnv(installationName: 'sq1') {
                     sh "sonar-scanner -Dsonar.projectKey= node-nagp"                    
                     sh "sonar-scanner -Dsonar.sources= ./frontend"     

@@ -22,12 +22,10 @@ pipeline {
                     
                 }
                 withSonarQubeEnv(installationName: 'sq1') {
-                    sh "sonar-scanner \
-                    
-                        -Dsonar.projectKey= node-nagp \
-                        -Dsonar.sources= ./frontend \
-                        -Dsonar.login= squ_5e56d72387698ef32e9ee9112389baa473aadb07 \
-                        -Dsonar.projectName= Node application \
+                    sh "sonar-scanner -Dsonar.projectKey= node-nagp \n                   
+                        -Dsonar.sources= ./frontend \n
+                        -Dsonar.login= squ_5e56d72387698ef32e9ee9112389baa473aadb07 \n
+                        -Dsonar.projectName= Node application \n
                         -Dsonar.projectVersion= 1.0.0"
 
 

@@ -30,13 +30,13 @@ pipeline {
                     sh "sonar-scanner -Dsonar.projectName= Node application "     
                     sh "sonar-scanner -Dsonar.projectVersion= 1.0.0 "   
 
-                    withSonarQubeEnv('My SonarQube Server', envOnly: true) {
+                    //withSonarQubeEnv('My SonarQube Server', envOnly: true) {
                     // This expands the evironment variables SONAR_CONFIG_NAME, SONAR_HOST_URL, SONAR_AUTH_TOKEN that can be used by any script.
-                    println ${env.SONAR_HOST_URL} 
+                    //println ${env.SONAR_HOST_URL} 
 } 
 
 
-                }
+                //}
             }
         }
     }

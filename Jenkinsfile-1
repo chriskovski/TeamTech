@@ -17,23 +17,25 @@ pipeline {
                 }
             }
             steps {
+
+                sh "which sonar-scanner"
             //    withSonarQubeEnv(installationName: 'sq1') {
             //        sh 'mvn dependency:go-offline -B -f ./MyWebApp/pom.xml'
             //        sh 'mvn clean install -f ./MyWebApp/pom.xml' 
             //        sh 'mvn sonar:sonar -Dsonar.login=squ_5e56d72387698ef32e9ee9112389baa473aadb07 -f ./MyWebApp/pom.xml'
                     
             //    }
-                withSonarQubeEnv(installationName: 'sq1') {
-                    sh "sonar-scanner -Dsonar.projectKey= node-nagp"                    
-                    sh "sonar-scanner -Dsonar.sources= ./frontend"     
-                    sh "sonar-scanner -Dsonar.login= squ_5e56d72387698ef32e9ee9112389baa473aadb07"    
-                    sh "sonar-scanner -Dsonar.projectName= Node application "     
-                    sh "sonar-scanner -Dsonar.projectVersion= 1.0.0 "   
+                //withSonarQubeEnv(installationName: 'sq1') {
+                //    sh "sonar-scanner -Dsonar.projectKey= node-nagp"                    
+                //    sh "sonar-scanner -Dsonar.sources= ./frontend"     
+                //    sh "sonar-scanner -Dsonar.login= squ_5e56d72387698ef32e9ee9112389baa473aadb07"    
+                //    sh "sonar-scanner -Dsonar.projectName= Node application "     
+                //    sh "sonar-scanner -Dsonar.projectVersion= 1.0.0 "   
 
                     //withSonarQubeEnv('My SonarQube Server', envOnly: true) {
                     // This expands the evironment variables SONAR_CONFIG_NAME, SONAR_HOST_URL, SONAR_AUTH_TOKEN that can be used by any script.
                     //println ${env.SONAR_HOST_URL} 
-} 
+
 
 
                 //}
